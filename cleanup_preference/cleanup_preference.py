@@ -17,7 +17,6 @@ import os
 import sys
 import shutil
 import subprocess
-import glob
 from datetime import datetime
 
 scriptDir = os.path.abspath(os.path.dirname(__file__)).replace('\\', '/')
