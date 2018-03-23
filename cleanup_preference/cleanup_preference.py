@@ -56,7 +56,8 @@ def checkProcess(procName):
     for line in proc.stdout:
         procParamList.append(line.replace("\r\n", '').replace('"', '').split(","))
     for pparam in procParamList:
-        pidList.append(pparam[1])
+        if len(pparam) > 1:
+            pidList.append(pparam[1])
 
     return pidList
 
@@ -112,12 +113,16 @@ def runMaya(mayaVer):
 # ---------------------------------------------------------
 # @param <str>curPrefDir : preference dorectory
 # @param <str>backDir : back up directory
+# @param <bool>hkeyFlag : flag restoring hotkey
 # @return None
-def copySetting(curPrefDir, backDir):
+def copySetting(curPrefDir, backDir, hkeyFlag=True):
 
     global windowPrefFiles
     global hotkeyPrefFiles
-    tgPrefFiles = windowPrefFiles + hotkeyPrefFiles
+    if hkeyFlag is True:
+        tgPrefFiles = windowPrefFiles + hotkeyPrefFiles
+    else:
+        tgPrefFiles = windowPrefFiles
     for tpref in tgPrefFiles:
         backPrefpath = backDir + '/' + tpref
         prefpath = curPrefDir + '/' + tpref
@@ -134,8 +139,9 @@ def copySetting(curPrefDir, backDir):
 # main
 # ---------------------------------------------------------
 # @param <str>mayaVer : maya version
+# @param <bool>hkeyFlag : flag restoring hotkey
 # @return None
-def main(mayaVer):
+def main(mayaVer, hkeyFlag=True):
 
     global prefDir
 
@@ -160,7 +166,7 @@ def main(mayaVer):
         else:
             print("# Canceled Task. #")
             print("# Please shut-down Maya. #")
-            # return
+            return
 
     # back up prefs
     backDir = backupDirs(curPrefDir)
@@ -171,9 +177,17 @@ def main(mayaVer):
     pipe = runMaya(mayaVer)
 
     # copy setting files
-    copySetting(curPrefDir, backDir)
+    copySetting(curPrefDir, backDir, hkeyFlag)
 
 
 # ----------------------------------------------------------------------------
 if __name__ == '__main__':
-    main(sys.argv[1])
+    if (sys.argv[2] == 'True' or
+       sys.argv[2] == '1'):
+        argv = True
+    elif sys.argv[2] == '0':
+        argv = False
+    else:
+        argv = False
+    
+    main(sys.argv[1], argv)
