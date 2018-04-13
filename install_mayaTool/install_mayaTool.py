@@ -150,6 +150,8 @@ def makeShelfCmd(toolName, mayaVer, cmdOwrite=None):
     shelfPath = shelfDir.replace('[mayaVer]', mayaVer) + '/' + shelfMelFile
     if cmdOwrite is None:
         toolCmd = toolGUICmd.replace('[toolName]', toolName)
+    else:
+        toolCmd = cmdOwrite
     shortName = makeShortName(toolName)
     toolBtnCmd = shelfBtnCmd.replace('[toolDir]', scriptDir)
     toolBtnCmd = toolBtnCmd.replace('[scriptName]', toolName)
@@ -218,4 +220,7 @@ def main(toolName, mayaVer, cmdOwrite=None):
 
 # ----------------------------------------------------------------------------
 if __name__ == '__main__':
-    main(sys.argv[1], sys.argv[2])
+    if len(sys.argv) > 2:
+        main(sys.argv[1], sys.argv[2], sys.argv[3])
+    else:
+        main(sys.argv[1], sys.argv[2])
