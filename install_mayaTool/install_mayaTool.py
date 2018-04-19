@@ -59,8 +59,8 @@ shelfBtnCmd = '''shelfButton
     -imageOverlayLabel "[shortScriptName]"
     -overlayLabelColor 0.8 0.8 0.8
     -overlayLabelBackColor 0 0 0 0.5
-    -image "pythonFamily.png"
-    -image1 "pythonFamily.png"
+    -image "[icon]"
+    -image1 "[icon]"
     -style "iconOnly"
     -marginWidth 1
     -marginHeight 1
@@ -152,10 +152,24 @@ def makeShelfCmd(toolName, mayaVer, cmdOwrite=None):
         toolCmd = toolGUICmd.replace('[toolName]', toolName)
     else:
         toolCmd = cmdOwrite
+
+    # get icon path
+    iconPath = None
+    for n in range(4):
+        iconGrobPath = scriptDir + '/' + '*/' * n + toolName + '_icon.png'
+        tmpIconPath = glob.glob(iconGrobPath)
+        if tmpIconPath:
+            iconPath = tmpIconPath[0].replace('\\', '/')
+            break
+    if not iconPath:
+        iconPath = 'pythonFamily.png'
+
+    # make command
     shortName = makeShortName(toolName)
     toolBtnCmd = shelfBtnCmd.replace('[toolDir]', scriptDir)
     toolBtnCmd = toolBtnCmd.replace('[scriptName]', toolName)
     toolBtnCmd = toolBtnCmd.replace('[shortScriptName]', shortName)
+    toolBtnCmd = toolBtnCmd.replace('[icon]', iconPath)
     toolBtnCmd = toolBtnCmd.replace('[toolCmd]', toolCmd)
 
     if os.path.exists(shelfPath):
@@ -220,7 +234,7 @@ def main(toolName, mayaVer, cmdOwrite=None):
 
 # ----------------------------------------------------------------------------
 if __name__ == '__main__':
-    if len(sys.argv) > 2:
+    if len(sys.argv) > 3:
         main(sys.argv[1], sys.argv[2], sys.argv[3])
     else:
         main(sys.argv[1], sys.argv[2])
