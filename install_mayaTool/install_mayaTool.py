@@ -183,8 +183,8 @@ def makeShelfCmd(toolName, mayaVer, cmdOwrite=None):
                 shelfBtnCmdTemp += sline
                 remFlg = True
             elif (remFlg is True and
-                  sline[-1].replace('\n', '').replace('\r', '') == ';'):
-                shelfBtnCmdTemp += sline
+                  len(sline.replace('\n', '').replace('\r', '')) > 0 and
+                  '}' in sline.replace('\n', '').replace('\r', '')[-2:]):
                 remFlg = False
             elif remFlg is True:
                 shelfBtnCmdTemp += sline
