@@ -75,6 +75,26 @@ shelfBtnCmd = shelfBtnCmd.replace('\\n    ', '\\n')
 
 
 # ---------------------------------------------------------
+# get icon path
+# ---------------------------------------------------------
+# @param <str>toolName : tool name
+# @return <str>iconPath : icon path
+def getIconPath(toolName):
+
+    iconPath = None
+    for n in range(6):
+        iconGrobPath = scriptDir + '/' + '*/' * n + toolName + '_icon.png'
+        tmpIconPath = glob.glob(iconGrobPath)
+        if tmpIconPath:
+            iconPath = tmpIconPath[0].replace('\\', '/')
+            break
+    if not iconPath:
+        iconPath = 'pythonFamily.png'
+
+    return iconPath
+
+
+# ---------------------------------------------------------
 # check shelf
 # ---------------------------------------------------------
 # @param <str>toolName : tool name
@@ -140,6 +160,7 @@ def makeShortName(toolName):
 # @return <str>shelfStr : shelf mel string
 def makeShelfCmd(toolName, mayaVer, cmdOwrite=None):
 
+    global scriptDir
     global shelfDir
     global shelfMel
     global shelfBtnCmd
@@ -154,15 +175,7 @@ def makeShelfCmd(toolName, mayaVer, cmdOwrite=None):
         toolCmd = cmdOwrite
 
     # get icon path
-    iconPath = None
-    for n in range(4):
-        iconGrobPath = scriptDir + '/' + '*/' * n + toolName + '_icon.png'
-        tmpIconPath = glob.glob(iconGrobPath)
-        if tmpIconPath:
-            iconPath = tmpIconPath[0].replace('\\', '/')
-            break
-    if not iconPath:
-        iconPath = 'pythonFamily.png'
+    iconPath = getIconPath(toolName)
 
     # make command
     shortName = makeShortName(toolName)
