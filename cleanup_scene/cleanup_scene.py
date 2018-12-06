@@ -6,7 +6,7 @@
 #  @file   cleanup_scene.py
 #  @author mono-g
 #
-#  Copyright(C) 2018 Satoshi Gonokami.
+#  Copyright(C) 2018 mono-g.
 #
 ##########################################################
 import pymel.core as pm
